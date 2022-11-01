@@ -1,38 +1,205 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #282c34;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: top;
+  
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: black;
+  height: 10vh;
+  min-width: 80vw;
+  box-shadow: 4px 4px 40px black;
+  z-index: 2;
+}
+
+.App-title {
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 3vmin);
+  
 }
 
-.App-link {
-  color: #61dafb;
+main {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: top;
+  width: 80vw;
+  box-shadow: 4px 4px 40px black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-menu  {
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+  z-index: 2;
+}
+
+.Top-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 80vw;
+}
+
+.Menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1vw;
+  min-width: 30%;
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  padding: 1vw;
+  font-size: calc(10px + 1vmin);
+}
+
+.Menu-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.Members-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1vw;
+  min-width: 20%;
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  padding: 1vw;
+  font-size: calc(10px + 1vmin);
+}
+
+.Members-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.Content-display {
+  background-color: whitesmoke;
+  min-height: 100vh;
+  width: 80vw;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+} 
+
+#Text-intro {
+  width: 50vw;
+  text-align: justify;
+  align-self: center;
+  margin: 10vw;
+}
+
+.Card-box {
+  background-image: url('./membercard.jpg');
+  background-size: contain;
+  position:relative;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  width: 27.5vh;
+  height: 38.75vh;
+  margin: 2vh;
+  border: 2px solid black;
+  text-transform:capitalize;
+  
+}
+
+.User-foto {
+  position: absolute;
+  border-radius: 50%;
+  width: 16vh;
+  height: 16vh;
+  margin-left: calc(-76.5px - 1.8vmin);
+  margin-top: -1.5vh;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.User-title {
+  position: absolute;
+  z-index: 1;
+}
+
+.User-name {
+  position:absolute;
+  color: white;
+  font-size: calc(10px + 2.2vmin);
+  text-align: left;
+  margin-top: -14vh;
+  margin-left: calc(-40px - 2vmin);
+  text-shadow: 2px 2px 2px black;
+}
+
+.User-role {
+  position: absolute;
+  color: red;
+  font-size: calc(10px + 1.5vmin);
+  font-family: 'Times New Roman', Times, serif;
+  margin-top: -19vh;
+  margin-left: calc(10px + 2vmin);
+  text-align: right;
+  text-decoration:underline;
+  text-shadow: 2px 2px 2px black;
+}
+
+.User-info {
+  position: absolute;
+  z-index: 1;
+  font-size: calc(5px + 1vmin);
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 23vh;
+  width: 15vh;
+  margin-top: calc(60px + 1vmin);
+  margin-left: calc(70px + 1vmin);
+  text-align: right;
+  /*border: 2px solid blue;*/
+}
+
+.User-status {
+  position: absolute;
+  margin-top: 9vh;
+}
+
+.User-mode {
+  position: absolute;
+  margin-top: 13vh;
+}
+
+.User-age {
+  position: absolute;
+  margin-top: 17vh;
+  width: calc(70px + 1vmin);
+}
+
+.User-birth {
+  position: absolute;
+  margin-top: calc(102px + 9vmin);
+  color: blue;
+  text-shadow: 1px 1px 1px black;
 }
