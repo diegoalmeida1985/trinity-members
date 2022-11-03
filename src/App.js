@@ -120,12 +120,14 @@ function App() {
     setIntroIsVisible('false');
     setTeacherIsClicked('false');
     setMonitorIsClicked('false');
+    setStudentIsClicked('false');
     setFormIsVisible('false');
   }
 
   function teachersButton() {
     setTeacherIsClicked('true');
     setMonitorIsClicked('false');
+    setStudentIsClicked('false');
     setMemberIsVisible('false');
     setIntroIsVisible('false');
     setFormIsVisible('false');
@@ -134,6 +136,7 @@ function App() {
   function monitorsButton() {
     setMonitorIsClicked('true');
     setTeacherIsClicked('false');
+    setStudentIsClicked('false');
     setMemberIsVisible('false');
     setIntroIsVisible('false');
     setFormIsVisible('false');
@@ -150,6 +153,7 @@ function App() {
 
   function addMembersButton() {
     setFormIsVisible('true');
+    setStudentIsClicked('false');
     setTeacherIsClicked('false');
     setMonitorIsClicked('false');
     setMemberIsVisible('false');
@@ -223,80 +227,58 @@ function App() {
   const [status, setStatus] = useState ("");
   const [mode, setMode] = useState ("");
   const [imageUrl,setImageUrl] = useState ("");
-
-  const member = {
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    role: '',
-    status: '',
-    mode: '',
-    imageUrl: ''
-  };
-
+  const [isUpdated, setIsUpdated] = useState ('false');
+  const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
+  
+ 
+  
   function handleSubmit(event) {
       
-    member.firstName = firstName;
-    member.lastName = lastName;
-    member.dateOfBirth = dateOfBirth;
-    member.role = role;
-    member.status = status;
-    member.mode = mode;
-    member.imageUrl = imageUrl;
-    event.preventDefault();
-    trinityUsers.push(member);
-  }
-
-  function clearForm(event) {
-    const member = {
-      firstName: '',
-      lastName: '',
-      dateOfBirth: '',
-      role: '',
-      status: '',
-      mode: '',
-      imageUrl: ''
+    const addNewMember = {
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      role: role,
+      status: status,
+      mode: mode,
+      imageUrl: imageUrl
     };
+    event.preventDefault();
+    setIsUpdated('true');
+    console.log(addNewMember);
+    const trinityUsersUpdated = [...showableUsers, addNewMember];
+    setShowableUsers(trinityUsersUpdated);
   }
 
   const newMemberForm = (
-    <form className= "add-member-form" onSubmit={handleSubmit}>
-      <fieldset>
-        <legend>Member Data</legend>
-        <label>
-          First Name: <input className='Label' type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
-        </label><br/>
-        <label>
-          Last Name: <input className='Label' type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-        </label><br/>
-        <label>
-          Date Of Birth: <input className='Label' type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)}/>
-        </label><br/>
-        <label>
-          Role: <select className='Label' value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="Teacher">Teacher</option>
-            <option value="Monitor">Monitor</option>
-            <option value="Student">Student</option>
-          </select>
-        </label><br/>
-        <label>
-          Status: <select className='Label' value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </label><br/>
-        <label>
-          Mode: <select className='Mode' value={mode} onCchange={(e) => setMode(e.target.value)}>
-            <option value="Online">Online</option>
-            <option value="Onsite">Onsite</option>
-          </select>
-        </label><br/>
-        <label>
-          Image URL: <input className='Label' type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}/>
-        </label><br/>
-        <input type="Submit" value="Add New Member"/>
-      </fieldset>
-    </form>
+    <div className= "add-member-form">
+      <legend>Member Data</legend>
+      <label>First Name: <input className='Label' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
+      </label><br/>
+      <label>Last Name: <input className='Label' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
+      </label><br/>
+      <label>Date Of Birth: <input className='Label' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
+      </label><br/>
+      <label>Role: <select className='Label' value={role} onChange={(event) => setRole(event.target.value)}>
+        <option value="Teacher">Teacher</option>
+        <option value="Monitor">Monitor</option>
+        <option value="Student">Student</option>
+      </select>
+      </label><br/>
+      <label>Status: <select className='Label' value={status} onChange={(event) => setStatus(event.target.value)}>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        </select>
+      </label><br/>
+      <label>Mode: <select className='Mode' value={mode} onChange={(event) => setMode(event.target.value)}>
+        <option value="Online">Online</option>
+        <option value="Onsite">Onsite</option>
+        </select>
+      </label><br/>
+      <label>Image URL: <input className='Label' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
+      </label><br/>
+      <button onClick={(event) => handleSubmit(event)}>Add New Member</button>
+    </div>
   );
  
   return (
@@ -318,20 +300,20 @@ function App() {
         <section className='Content-display'>
           {introIsVisible === 'true' ? textIntro:null}
 
-          {memberIsVisible === 'true' ? (trinityUsers.map((trinityUsers) =>
+          {(memberIsVisible === 'true' && showableUsers) ? (showableUsers.map((each) =>
             <div id="Card-box" className="Card-box">
               <div className="Image-profile">
-                <img className="User-foto" src={trinityUsers.imageUrl}/>
+                <img className="User-foto" src={each.imageUrl}/>
               </div>
               <div className="User-title">
-                <h1 className="User-name">{trinityUsers.firstName} {trinityUsers.lastName}</h1>
-                <h2 className="User-role">{trinityUsers.role}</h2>
+                <h1 className="User-name">{each.firstName} {each.lastName}</h1>
+                <h2 className="User-role">{each.role}</h2>
               </div>
               <div className="User-info">
-                <h2 className="User-status">{trinityUsers.status}</h2>
-                <h2 className="User-mode">{trinityUsers.mode}</h2>
+                <h2 className="User-status">{each.status}</h2>
+                <h2 className="User-mode">{each.mode}</h2>
                 <h2 className="User-age">Date of Birth:</h2>
-                <h2 className="User-birth">{trinityUsers.dateOfBirth}</h2>
+                <h2 className="User-birth">{each.dateOfBirth}</h2>
               </div>
             </div>
           )):null}
@@ -341,7 +323,9 @@ function App() {
           {formIsVisible === 'true' ? newMemberForm:null}
         </section>
       </main>
-      {console.log(trinityUsers)}
+      {console.log(showableUsers)}
+      {console.log(isUpdated)}
+      
     </div>
   );
 }
