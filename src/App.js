@@ -2,6 +2,7 @@ import './App.css';
 import {useState} from 'react';
 import { isVisible } from '@testing-library/user-event/dist/utils';
 import membercard from './membercard.jpg';
+import Cards from './Cards';
 
 
 
@@ -91,6 +92,22 @@ function App() {
     }
   ];
 
+  const [introIsVisible, setIntroIsVisible] = useState ('true');
+  const [memberIsVisible, setMemberIsVisible] = useState ('false');
+  const [teacherIsClicked, setTeacherIsClicked] = useState ('false');
+  const [monitorIsClicked, setMonitorIsClicked] = useState ('false');
+  const [studentIsClicked, setStudentIsClicked] = useState ('false');
+  const [formIsVisible, setFormIsVisible] = useState ('false');
+  const [firstName, setFirstName] = useState ("");
+  const [lastName, setLastName] = useState ("");
+  const [dateOfBirth, setDateOfBirth] = useState ("");
+  const [role, setRole] = useState ("");
+  const [status, setStatus] = useState ("");
+  const [mode, setMode] = useState ("");
+  const [imageUrl,setImageUrl] = useState ("");
+  const [isUpdated, setIsUpdated] = useState ('false');
+  const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
+
   const membersMenu = (
     <div className='Top-menu'>
       <button className='Members-button' onClick={teachersButton}>Teachers</button>
@@ -107,13 +124,41 @@ function App() {
       Sed maximus justo vel arcu aliquam cursus. Aenean at pretium lectus. Fusce elit velit, laoreet eget porttitor ut, commodo eget dolor. Vivamus rutrum mi dui, a posuere nisl vestibulum eu. Maecenas eleifend sapien enim, a hendrerit elit placerat nec. Fusce non massa enim. Quisque blandit tellus et turpis egestas ultrices vel id velit.
     </p>
   );
+
+  const teachersFound = showableUsers.filter((element) => element.role.toLowerCase() === 'teacher');
+  const monitorsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'monitor');
+  const studentsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'student');
  
-  const [introIsVisible, setIntroIsVisible] = useState ('true');
-  const [memberIsVisible, setMemberIsVisible] = useState ('false');
-  const [teacherIsClicked, setTeacherIsClicked] = useState ('false');
-  const [monitorIsClicked, setMonitorIsClicked] = useState ('false');
-  const [studentIsClicked, setStudentIsClicked] = useState ('false');
-  const [formIsVisible, setFormIsVisible] = useState ('false');
+  const newMemberForm = (
+    <div className= "add-member-form">
+      <legend>Member Data</legend>
+      <label>First Name: <input className='Label' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
+      </label><br/>
+      <label>Last Name: <input className='Label' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
+      </label><br/>
+      <label>Date Of Birth: <input className='Label' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
+      </label><br/>
+      <label>Role: <select className='Label' value={role} onChange={(event) => setRole(event.target.value)}>
+        <option value="Teacher">Teacher</option>
+        <option value="Monitor">Monitor</option>
+        <option value="Student">Student</option>
+      </select>
+      </label><br/>
+      <label>Status: <select className='Label' value={status} onChange={(event) => setStatus(event.target.value)}>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        </select>
+      </label><br/>
+      <label>Mode: <select className='Mode' value={mode} onChange={(event) => setMode(event.target.value)}>
+        <option value="Online">Online</option>
+        <option value="Onsite">Onsite</option>
+        </select>
+      </label><br/>
+      <label>Image URL: <input className='Label' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
+      </label><br/>
+      <button onClick={(event) => handleSubmit(event)}>Add New Member</button>
+    </div>
+  );
 
   function membersButton() {
     setMemberIsVisible('true');
@@ -160,78 +205,6 @@ function App() {
     setIntroIsVisible('false');
   }
 
-  const teachersFound = trinityUsers.find((element) => element.role.toLowerCase() === 'teacher');
-
-  const showTeachers = (
-    <div id="Card-box" className="Card-box">
-              <div className="Image-profile">
-                <img className="User-foto" src={teachersFound.imageUrl}/>
-              </div>
-              <div className="User-title">
-                <h1 className="User-name">{teachersFound.firstName} {teachersFound.lastName}</h1>
-                <h2 className="User-role">{teachersFound.role}</h2>
-              </div>
-              <div className="User-info">
-                <h2 className="User-status">{teachersFound.status}</h2>
-                <h2 className="User-mode">{teachersFound.mode}</h2>
-                <h2 className="User-age">Date of Birth:</h2>
-                <h2 className="User-birth">{teachersFound.dateOfBirth}</h2>
-              </div>
-            </div>
-  );
-
-  const monitorsFound = trinityUsers.filter((element) => element.role.toLowerCase() === 'monitor');
-
-  const showMonitors = (monitorsFound.map((monitorsFound) => (
-    <div id="Card-box" className="Card-box">
-              <div className="Image-profile">
-                <img className="User-foto" src={monitorsFound.imageUrl}/>
-              </div>
-              <div className="User-title">
-                <h1 className="User-name">{monitorsFound.firstName} {monitorsFound.lastName}</h1>
-                <h2 className="User-role">{monitorsFound.role}</h2>
-              </div>
-              <div className="User-info">
-                <h2 className="User-status">{monitorsFound.status}</h2>
-                <h2 className="User-mode">{monitorsFound.mode}</h2>
-                <h2 className="User-age">Date of Birth:</h2>
-                <h2 className="User-birth">{monitorsFound.dateOfBirth}</h2>
-              </div>
-            </div>
-  )));
-
-  const studentsFound = trinityUsers.filter((element) => element.role.toLowerCase() === 'student');
-
-  const showStudents = (studentsFound.map((studentsFound) => (
-    <div id="Card-box" className="Card-box">
-              <div className="Image-profile">
-                <img className="User-foto" src={studentsFound.imageUrl}/>
-              </div>
-              <div className="User-title">
-                <h1 className="User-name">{studentsFound.firstName} {studentsFound.lastName}</h1>
-                <h2 className="User-role">{studentsFound.role}</h2>
-              </div>
-              <div className="User-info">
-                <h2 className="User-status">{studentsFound.status}</h2>
-                <h2 className="User-mode">{studentsFound.mode}</h2>
-                <h2 className="User-age">Date of Birth:</h2>
-                <h2 className="User-birth">{studentsFound.dateOfBirth}</h2>
-              </div>
-            </div>
-  )));
-
-  const [firstName, setFirstName] = useState ("");
-  const [lastName, setLastName] = useState ("");
-  const [dateOfBirth, setDateOfBirth] = useState ("");
-  const [role, setRole] = useState ("");
-  const [status, setStatus] = useState ("");
-  const [mode, setMode] = useState ("");
-  const [imageUrl,setImageUrl] = useState ("");
-  const [isUpdated, setIsUpdated] = useState ('false');
-  const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
-  
- 
-  
   function handleSubmit(event) {
       
     const addNewMember = {
@@ -250,36 +223,7 @@ function App() {
     setShowableUsers(trinityUsersUpdated);
   }
 
-  const newMemberForm = (
-    <div className= "add-member-form">
-      <legend>Member Data</legend>
-      <label>First Name: <input className='Label' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
-      </label><br/>
-      <label>Last Name: <input className='Label' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
-      </label><br/>
-      <label>Date Of Birth: <input className='Label' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
-      </label><br/>
-      <label>Role: <select className='Label' value={role} onChange={(event) => setRole(event.target.value)}>
-        <option value="Teacher">Teacher</option>
-        <option value="Monitor">Monitor</option>
-        <option value="Student">Student</option>
-      </select>
-      </label><br/>
-      <label>Status: <select className='Label' value={status} onChange={(event) => setStatus(event.target.value)}>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-        </select>
-      </label><br/>
-      <label>Mode: <select className='Mode' value={mode} onChange={(event) => setMode(event.target.value)}>
-        <option value="Online">Online</option>
-        <option value="Onsite">Onsite</option>
-        </select>
-      </label><br/>
-      <label>Image URL: <input className='Label' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
-      </label><br/>
-      <button onClick={(event) => handleSubmit(event)}>Add New Member</button>
-    </div>
-  );
+  
  
   return (
     <div className="App">
@@ -301,25 +245,17 @@ function App() {
           {introIsVisible === 'true' ? textIntro:null}
 
           {(memberIsVisible === 'true' && showableUsers) ? (showableUsers.map((each) =>
-            <div id="Card-box" className="Card-box">
-              <div className="Image-profile">
-                <img className="User-foto" src={each.imageUrl}/>
-              </div>
-              <div className="User-title">
-                <h1 className="User-name">{each.firstName} {each.lastName}</h1>
-                <h2 className="User-role">{each.role}</h2>
-              </div>
-              <div className="User-info">
-                <h2 className="User-status">{each.status}</h2>
-                <h2 className="User-mode">{each.mode}</h2>
-                <h2 className="User-age">Date of Birth:</h2>
-                <h2 className="User-birth">{each.dateOfBirth}</h2>
-              </div>
-            </div>
+            <Cards cardData = {each}/>
           )):null}
-          {teacherIsClicked === 'true' ? showTeachers:null}
-          {monitorIsClicked === 'true' ? showMonitors:null}
-          {studentIsClicked === 'true' ? showStudents:null}
+          {teacherIsClicked === 'true' ? (teachersFound.map((each) => 
+            <Cards cardData = {each}/>
+          )):null}
+          {monitorIsClicked === 'true' ? (monitorsFound.map((each) =>
+            <Cards cardData = {each}/>
+          )):null}
+          {studentIsClicked === 'true' ? (studentsFound.map((each) =>
+            <Cards cardData = {each}/>
+          )):null}
           {formIsVisible === 'true' ? newMemberForm:null}
         </section>
       </main>
