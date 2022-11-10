@@ -1,8 +1,12 @@
 function Cards(props) {
     
-    const {cardData} = props;
+    const {cardData, handleDelete, teste} = props;
+    console.log(handleDelete);
+    //console.log(cardData);
+    
 
     return (
+    <div className="Card-display">
         <div id="Card-box" className="Card-box">
             <div className="Image-profile">
                 <img className="User-foto" src={cardData.imageUrl}/>
@@ -18,6 +22,12 @@ function Cards(props) {
                 <h2 className="User-birth">{cardData.dateOfBirth}</h2>
             </div>
         </div>
+        <button className="Edit-delete-button">Editar</button>
+        <button 
+            className="Edit-delete-button" 
+            onClick={() => teste()}>Deletar
+        </button>
+    </div>
     );
 }
 

@@ -107,6 +107,11 @@ function App() {
   const [imageUrl,setImageUrl] = useState ("");
   const [isUpdated, setIsUpdated] = useState ('false');
   const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
+  const [searchIsVisible, setSearchIsVisible] = useState ('false');
+  const [memberSearched, setMemberSearched] = useState ("");
+  const [memberFound, setMemberFound] = useState ("");
+  const [memberIsFound, setMemberIsFound] = useState ("false");
+  const [fourCardsViewIsClicked, setFourCardsViewIsClicked] = useState ("false");
 
   const membersMenu = (
     <div className='Top-menu'>
@@ -128,7 +133,8 @@ function App() {
   const teachersFound = showableUsers.filter((element) => element.role.toLowerCase() === 'teacher');
   const monitorsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'monitor');
   const studentsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'student');
- 
+
+
   const newMemberForm = (
     <div className= "add-member-form">
       <legend>Member Data</legend>
@@ -156,7 +162,7 @@ function App() {
       </label><br/>
       <label>Image URL: <input className='Label' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
       </label><br/>
-      <button onClick={(event) => handleSubmit(event)}>Add New Member</button>
+      <button onClick={() => handleSubmit()}>Add New Member</button>
     </div>
   );
 
@@ -167,6 +173,8 @@ function App() {
     setMonitorIsClicked('false');
     setStudentIsClicked('false');
     setFormIsVisible('false');
+    setSearchIsVisible('true');
+    setMemberIsFound('false');
   }
 
   function teachersButton() {
@@ -176,6 +184,7 @@ function App() {
     setMemberIsVisible('false');
     setIntroIsVisible('false');
     setFormIsVisible('false');
+    setMemberIsFound('false');
   }
 
   function monitorsButton() {
@@ -185,6 +194,7 @@ function App() {
     setMemberIsVisible('false');
     setIntroIsVisible('false');
     setFormIsVisible('false');
+    setMemberIsFound('false');
   }
 
   function studentsButton() {
@@ -194,6 +204,7 @@ function App() {
     setMemberIsVisible('false');
     setIntroIsVisible('false');
     setFormIsVisible('false');
+    setMemberIsFound('false');
   }
 
   function addMembersButton() {
@@ -203,9 +214,11 @@ function App() {
     setMonitorIsClicked('false');
     setMemberIsVisible('false');
     setIntroIsVisible('false');
+    setSearchIsVisible('false');
+    setMemberIsFound('false');
   }
 
-  function handleSubmit(event) {
+  function handleSubmit() {
       
     const addNewMember = {
       firstName: firstName,
@@ -216,13 +229,42 @@ function App() {
       mode: mode,
       imageUrl: imageUrl
     };
-    event.preventDefault();
     setIsUpdated('true');
-    console.log(addNewMember);
     const trinityUsersUpdated = [...showableUsers, addNewMember];
     setShowableUsers(trinityUsersUpdated);
   }
 
+  function handleSearch() {
+   
+    const searchResult = showableUsers.filter((element) => element.firstName.toLowerCase() === memberSearched.toLowerCase());
+    setMemberFound(searchResult);
+    setMemberIsFound('true');
+    setTeacherIsClicked('false');
+    setMonitorIsClicked('false');
+    setStudentIsClicked('false');
+    setMemberIsVisible('false');
+    setIntroIsVisible('false');
+    setFormIsVisible('false');
+  }
+
+  function handleDeleteMemberButton(firstName) {
+    const updatedMemberList = showableUsers.filter((element) => element.firstName !== firstName);
+    setShowableUsers(updatedMemberList);
+    {console.log(updatedMemberList)};
+  }
+
+  function viewLimitFourCards() {
+    const showFourCards = showableUsers.slice(0,4);
+    setFourCardsViewIsClicked('true');
+    setFormIsVisible('false');
+    setStudentIsClicked('false');
+    setTeacherIsClicked('false');
+    setMonitorIsClicked('false');
+    setMemberIsVisible('false');
+    setIntroIsVisible('false');
+    setSearchIsVisible('false');
+    setMemberIsFound('false');
+  }
   
  
   return (
@@ -243,10 +285,34 @@ function App() {
         </section>
         <section className='Content-display'>
           {introIsVisible === 'true' ? textIntro:null}
-
+          {searchIsVisible === 'true' ? (
+            <div>
+              <h3>Views Per Page:</h3>
+              <nav>
+                <button onClick={viewLimitFourCards}>4 CARDS</button>
+                <button>8 CARDS</button>
+                <button>10 CARDS</button>
+              </nav>
+              <div>
+                <label>Search Member: </label>
+                <input type="Search" className='Search-field' value={memberSearched} onChange={(event) => setMemberSearched(event.target.value)}/>
+                <button onClick={handleSearch}>Search</button>
+              </div>
+            </div>
+          ):null}
+          {memberIsFound === 'true' ? (memberFound.map((each) =>
+            (<Cards 
+              cardData = {each}
+              handleDelete={handleDeleteMemberButton}
+              teste = {()=>console.log('funciona')}
+            />)
+          )):null}
           {(memberIsVisible === 'true' && showableUsers) ? (showableUsers.map((each) =>
             <Cards cardData = {each}/>
           )):null}
+          {/* {(fourCardsViewIsClicked === 'true' && showableUsers) ? (showFourCards.map((each) =>
+            <Cards cardData = {each}/>
+          )):null} */}
           {teacherIsClicked === 'true' ? (teachersFound.map((each) => 
             <Cards cardData = {each}/>
           )):null}
@@ -259,8 +325,8 @@ function App() {
           {formIsVisible === 'true' ? newMemberForm:null}
         </section>
       </main>
-      {console.log(showableUsers)}
-      {console.log(isUpdated)}
+      
+      
       
     </div>
   );
