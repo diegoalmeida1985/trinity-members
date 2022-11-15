@@ -1,8 +1,7 @@
 function Cards(props) {
     
-    const {cardData, handleDelete, teste} = props;
-    console.log(handleDelete);
-    //console.log(cardData);
+    const {cardData, onDelete} = props;
+    
     
 
     return (
@@ -25,7 +24,7 @@ function Cards(props) {
         <button className="Edit-delete-button">Editar</button>
         <button 
             className="Edit-delete-button" 
-            onClick={() => teste()}>Deletar
+            onClick={() => onDelete(cardData.firstName)}>Deletar
         </button>
     </div>
     );

@@ -92,11 +92,10 @@ function App() {
     }
   ];
 
-  const [introIsVisible, setIntroIsVisible] = useState ('true');
-  const [memberIsVisible, setMemberIsVisible] = useState ('false');
-  const [teacherIsClicked, setTeacherIsClicked] = useState ('false');
-  const [monitorIsClicked, setMonitorIsClicked] = useState ('false');
-  const [studentIsClicked, setStudentIsClicked] = useState ('false');
+  const [welcomeIsVisible, setWelcomeIsVisible] = useState ('true');
+  const [membersMenu, setMembersMenu] = useState ('');
+  const [membersMenuIsVisible, setMembersMenuIsVisible] = useState ('false');
+  const [cardsIsVisible, setCardsIsVisible] = useState ('false');
   const [formIsVisible, setFormIsVisible] = useState ('false');
   const [firstName, setFirstName] = useState ("");
   const [lastName, setLastName] = useState ("");
@@ -107,115 +106,75 @@ function App() {
   const [imageUrl,setImageUrl] = useState ("");
   const [isUpdated, setIsUpdated] = useState ('false');
   const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
-  const [searchIsVisible, setSearchIsVisible] = useState ('false');
-  const [memberSearched, setMemberSearched] = useState ("");
-  const [memberFound, setMemberFound] = useState ("");
-  const [memberIsFound, setMemberIsFound] = useState ("false");
-  const [fourCardsViewIsClicked, setFourCardsViewIsClicked] = useState ("false");
-
-  const membersMenu = (
-    <div className='Top-menu'>
-      <button className='Members-button' onClick={teachersButton}>Teachers</button>
-      <button className='Members-button' onClick={monitorsButton}>Class Monitors</button>
-      <button className='Members-button' onClick={studentsButton}>Students</button>
-      <button className='Members-button' onClick={addMembersButton}>Add Members</button>
-    </div>    
-  );
-
-  const textIntro = (
-    <p id='Text-intro'>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi egestas dictum nisl ac mollis. Vestibulum aliquet non ante sit amet tempor. Duis ac gravida diam. Nulla eget urna ut dolor suscipit fringilla et at mi. Ut facilisis felis a metus efficitur fringilla. Integer auctor sed nisl in laoreet. Praesent ut ullamcorper ligula. Nulla quis orci vitae libero ullamcorper eleifend ut vel leo. Suspendisse et cursus mauris. Duis aliquet tristique eros sed iaculis.
-      Quisque ut viverra justo, ac pellentesque mauris. Phasellus nec molestie ante, vel viverra nulla. Fusce sit amet efficitur nibh. Etiam ut congue dolor. Nam condimentum lacinia feugiat. Proin sagittis ac metus vestibulum feugiat. Sed viverra nulla sed velit pretium, sit amet porta lectus congue. Cras in venenatis elit. Sed hendrerit volutpat porttitor. Suspendisse a bibendum justo, at imperdiet lacus. Praesent eget tortor accumsan lectus posuere interdum non in dolor. Aenean blandit justo at ornare rhoncus. In tincidunt quam quis tortor ullamcorper, a maximus tortor sagittis.
-      Sed maximus justo vel arcu aliquam cursus. Aenean at pretium lectus. Fusce elit velit, laoreet eget porttitor ut, commodo eget dolor. Vivamus rutrum mi dui, a posuere nisl vestibulum eu. Maecenas eleifend sapien enim, a hendrerit elit placerat nec. Fusce non massa enim. Quisque blandit tellus et turpis egestas ultrices vel id velit.
-    </p>
-  );
-
-  const teachersFound = showableUsers.filter((element) => element.role.toLowerCase() === 'teacher');
-  const monitorsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'monitor');
-  const studentsFound = showableUsers.filter((element) => element.role.toLowerCase() === 'student');
-
+  const [membersList, setMembersList] = useState ([...trinityUsers]);
+  const [memberSearched, setMemberSearched] = useState ('');
+  const [amountOfPages, setAmountOfPages] = useState (0);
+  const [counter, setCounter] = useState (1);
+  const [maxCardsView, setMaxCardsView] = useState (0);
+  const [init, setInit] = useState (0);
 
   const newMemberForm = (
-    <div className= "add-member-form">
+    <div className= "Add-member-form">
       <legend>Member Data</legend>
-      <label>First Name: <input className='Label' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
+      <label className='Label'>First Name: <input className='Input-field' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
       </label><br/>
-      <label>Last Name: <input className='Label' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
+      <label className='Label'>Last Name: <input className='Input-field' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
       </label><br/>
-      <label>Date Of Birth: <input className='Label' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
+      <label className='Label'>Date Of Birth: <input className='Input-field' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
       </label><br/>
-      <label>Role: <select className='Label' value={role} onChange={(event) => setRole(event.target.value)}>
+      <label className='Label'>Role: <select className='Input-field' value={role} onChange={(event) => setRole(event.target.value)}>
         <option value="Teacher">Teacher</option>
         <option value="Monitor">Monitor</option>
         <option value="Student">Student</option>
       </select>
       </label><br/>
-      <label>Status: <select className='Label' value={status} onChange={(event) => setStatus(event.target.value)}>
+      <label className='Label'>Status: <select className='Input-field' value={status} onChange={(event) => setStatus(event.target.value)}>
         <option value="Active">Active</option>
         <option value="Inactive">Inactive</option>
         </select>
       </label><br/>
-      <label>Mode: <select className='Mode' value={mode} onChange={(event) => setMode(event.target.value)}>
+      <label className='Label'>Mode: <select className='Input-field' value={mode} onChange={(event) => setMode(event.target.value)}>
         <option value="Online">Online</option>
         <option value="Onsite">Onsite</option>
         </select>
       </label><br/>
-      <label>Image URL: <input className='Label' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
+      <label className='Label'>Image URL: <input className='Input-field' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
       </label><br/>
-      <button onClick={() => handleSubmit()}>Add New Member</button>
+      <div className='Form-buttons'>
+        <button className='Add-Return-button' onClick={handleSubmit}>Add New Member</button>
+        <button className='Add-Return-button' onClick={handleReturn}>Return</button>
+      </div>
     </div>
   );
 
-  function membersButton() {
-    setMemberIsVisible('true');
-    setIntroIsVisible('false');
-    setTeacherIsClicked('false');
-    setMonitorIsClicked('false');
-    setStudentIsClicked('false');
-    setFormIsVisible('false');
-    setSearchIsVisible('true');
-    setMemberIsFound('false');
+  function enterButton() {
+    setMembersMenuIsVisible('true');
+    setWelcomeIsVisible('false');
+    setCardsIsVisible('true');
   }
 
   function teachersButton() {
-    setTeacherIsClicked('true');
-    setMonitorIsClicked('false');
-    setStudentIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setFormIsVisible('false');
-    setMemberIsFound('false');
+    const teachersFound = membersList.filter((element) => element.role.toLowerCase() === 'teacher');
+    setShowableUsers(teachersFound);
+    setCardsIsVisible('true');
   }
 
   function monitorsButton() {
-    setMonitorIsClicked('true');
-    setTeacherIsClicked('false');
-    setStudentIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setFormIsVisible('false');
-    setMemberIsFound('false');
+    const monitorsFound = membersList.filter((element) => element.role.toLowerCase() === 'monitor');
+    setShowableUsers(monitorsFound);
+    setCardsIsVisible('true');
   }
 
   function studentsButton() {
-    setStudentIsClicked('true')
-    setMonitorIsClicked('false');
-    setTeacherIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setFormIsVisible('false');
-    setMemberIsFound('false');
+    const studentsFound = membersList.filter((element) => element.role.toLowerCase() === 'student');
+    setShowableUsers(studentsFound);
+    setCardsIsVisible('true');
   }
 
   function addMembersButton() {
     setFormIsVisible('true');
-    setStudentIsClicked('false');
-    setTeacherIsClicked('false');
-    setMonitorIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setSearchIsVisible('false');
-    setMemberIsFound('false');
+    setCardsIsVisible('false');
+    setMembersMenuIsVisible('false');    
   }
 
   function handleSubmit() {
@@ -230,98 +189,137 @@ function App() {
       imageUrl: imageUrl
     };
     setIsUpdated('true');
-    const trinityUsersUpdated = [...showableUsers, addNewMember];
+    const trinityUsersUpdated = [...membersList, addNewMember];
     setShowableUsers(trinityUsersUpdated);
+    setMembersList(trinityUsersUpdated);
+    setFormIsVisible('false');
+    setMembersMenuIsVisible('true');
+    setCardsIsVisible('true');
+  }
+
+  function handleReturn() {
+    setFormIsVisible('false');
+    setMembersMenuIsVisible('true');
+    setCardsIsVisible('true'); 
   }
 
   function handleSearch() {
-   
-    const searchResult = showableUsers.filter((element) => element.firstName.toLowerCase() === memberSearched.toLowerCase());
-    setMemberFound(searchResult);
-    setMemberIsFound('true');
-    setTeacherIsClicked('false');
-    setMonitorIsClicked('false');
-    setStudentIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setFormIsVisible('false');
+    const searchResult = membersList.filter((element) => element.firstName.toLowerCase() === memberSearched.toLowerCase());
+    setShowableUsers(searchResult);
+    
   }
 
   function handleDeleteMemberButton(firstName) {
-    const updatedMemberList = showableUsers.filter((element) => element.firstName !== firstName);
+    const updatedMemberList = membersList.filter((element) => element.firstName !== firstName);
     setShowableUsers(updatedMemberList);
-    {console.log(updatedMemberList)};
+    setMembersList(updatedMemberList);
   }
 
   function viewLimitFourCards() {
-    const showFourCards = showableUsers.slice(0,4);
-    setFourCardsViewIsClicked('true');
-    setFormIsVisible('false');
-    setStudentIsClicked('false');
-    setTeacherIsClicked('false');
-    setMonitorIsClicked('false');
-    setMemberIsVisible('false');
-    setIntroIsVisible('false');
-    setSearchIsVisible('false');
-    setMemberIsFound('false');
+    const showFourCards = membersList.slice(0,4);
+    setMaxCardsView(showFourCards.length);
+    setShowableUsers(showFourCards);
+    const length = membersList.length;
+    setAmountOfPages(Math.ceil(length / 4));
+    setCounter(1);
+    setInit(4);
   }
   
+  function viewLimitEightCards() {
+    const showEightCards = membersList.slice(0,8);
+    setMaxCardsView(showEightCards.length);
+    setShowableUsers(showEightCards);
+    const length = membersList.length;
+    setAmountOfPages(Math.ceil(length / 8));
+    setCounter(1);
+    setInit(8);
+  }
+  
+  function viewLimitTenCards() {
+    const showTenCards = membersList.slice(0,10);
+    setMaxCardsView(showTenCards.length);
+    setShowableUsers(showTenCards);
+    const length = membersList.length;
+    setAmountOfPages(Math.ceil(length / 10));
+    setCounter(1);
+    setInit(10);
+  }
+
+  function nextPageButton() {
+    const initialMember = showableUsers.length * counter; 
+    const nextPage = membersList.slice(initialMember, (initialMember+maxCardsView));
+    setShowableUsers(nextPage);
+    setCounter(counter + 1);
+    setInit(initialMember);
+    console.log(initialMember);
+    console.log(init);
+  }
+
+  function previousPageButton() {
+    const initialMember = init - maxCardsView;
+    const nextPage = membersList.slice(initialMember, (initialMember+maxCardsView));
+    setShowableUsers(nextPage);
+    setInit(initialMember);
+    console.log(initialMember);
+    console.log(init);
+    setCounter(1);
+  }
+
+       
  
   return (
     <div className="App">
       <header className="App-header">
         <h1 className="App-title">TRINITY GROUP</h1>
       </header>
+      {membersMenuIsVisible === 'true' ? (
+        <div className='Top-menu'>
+          <button className='Members-button' onClick={teachersButton}>Teachers</button>
+          <button className='Members-button' onClick={monitorsButton}>Class Monitors</button>
+          <button className='Members-button' onClick={studentsButton}>Students</button>
+          <button className='Members-button' onClick={addMembersButton}>Add Members</button>
+        </div>)
+      :null}
       <main>
-        <section className='App-menu'>
-          <nav className='Menu'>
-            {memberIsVisible === 'false' ? (<div className='Top-menu'>
-              <button className='Menu-button'>Class Journal</button>
-              <button onClick={membersButton} className='Menu-button'>Members</button>
-              <button className='Menu-button'>Links</button>
-            </div>):null}
-            {memberIsVisible === 'true' ? membersMenu:null}
-          </nav>
-        </section>
         <section className='Content-display'>
-          {introIsVisible === 'true' ? textIntro:null}
-          {searchIsVisible === 'true' ? (
-            <div>
-              <h3>Views Per Page:</h3>
-              <nav>
-                <button onClick={viewLimitFourCards}>4 CARDS</button>
-                <button>8 CARDS</button>
-                <button>10 CARDS</button>
-              </nav>
-              <div>
-                <label>Search Member: </label>
-                <input type="Search" className='Search-field' value={memberSearched} onChange={(event) => setMemberSearched(event.target.value)}/>
-                <button onClick={handleSearch}>Search</button>
-              </div>
+          {welcomeIsVisible === 'true' ? (
+            <div className='Initial-page'>
+              <p className='Welcome-text'>WELCOME TO MEMBERS AREA</p>
+              <button className='Enter-button' onClick={enterButton}>ENTER</button>
             </div>
           ):null}
-          {memberIsFound === 'true' ? (memberFound.map((each) =>
-            (<Cards 
+          <div className='Search-bar'>
+            {cardsIsVisible === 'true' ? (
+              <div>
+                <div className='Search-area'>
+                  <label className='Search-label'>Search Member: </label>
+                  <input type="Search" className='Search-field' value={memberSearched} onChange={(event) => setMemberSearched(event.target.value)}/>
+                  <button onClick={handleSearch}>Search</button>
+                </div>
+                <p>Cards Per Page:</p>
+                <nav>
+                  <button className='Card-limit-view-button' onClick={viewLimitFourCards}>4 CARDS</button>
+                  <button className='Card-limit-view-button' onClick={viewLimitEightCards}>8 CARDS</button>
+                  <button className='Card-limit-view-button' onClick={viewLimitTenCards}>10 CARDS</button>
+                </nav>
+              </div>
+            ):null}
+          </div>
+          <div className='Cards-content-display'>  
+            {(cardsIsVisible === 'true' && showableUsers) ? (showableUsers.map((each) =>
+              <Cards 
               cardData = {each}
-              handleDelete={handleDeleteMemberButton}
-              teste = {()=>console.log('funciona')}
-            />)
-          )):null}
-          {(memberIsVisible === 'true' && showableUsers) ? (showableUsers.map((each) =>
-            <Cards cardData = {each}/>
-          )):null}
-          {/* {(fourCardsViewIsClicked === 'true' && showableUsers) ? (showFourCards.map((each) =>
-            <Cards cardData = {each}/>
-          )):null} */}
-          {teacherIsClicked === 'true' ? (teachersFound.map((each) => 
-            <Cards cardData = {each}/>
-          )):null}
-          {monitorIsClicked === 'true' ? (monitorsFound.map((each) =>
-            <Cards cardData = {each}/>
-          )):null}
-          {studentIsClicked === 'true' ? (studentsFound.map((each) =>
-            <Cards cardData = {each}/>
-          )):null}
+              onDelete = {handleDeleteMemberButton}
+              />
+            )):null}
+          </div>
+          {(cardsIsVisible === 'true' && showableUsers) ? (
+            <nav className='Menu-previous-next-button'>
+              <button className='Previous-next-button' onClick={previousPageButton}>PREVIOUS PAGE</button>
+              <button className='Previous-next-button' onClick={nextPageButton}>NEXT PAGE</button>
+            </nav>
+          ):null};
+          
           {formIsVisible === 'true' ? newMemberForm:null}
         </section>
       </main>
