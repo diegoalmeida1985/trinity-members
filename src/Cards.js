@@ -1,6 +1,6 @@
 function Cards(props) {
     
-    const {cardData, onDelete} = props;
+    const {cardData, onDelete, onEdit} = props;
     
     
 
@@ -21,10 +21,13 @@ function Cards(props) {
                 <h2 className="User-birth">{cardData.dateOfBirth}</h2>
             </div>
         </div>
-        <button className="Edit-delete-button">Editar</button>
+        <button 
+            className="Edit-delete-button"
+            onClick={() => onEdit(cardData.id)}>Editar
+        </button>
         <button 
             className="Edit-delete-button" 
-            onClick={() => onDelete(cardData.firstName)}>Deletar
+            onClick={() => onDelete(cardData.id)}>Deletar
         </button>
     </div>
     );
