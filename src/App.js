@@ -414,7 +414,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="App-title">TRINITY GROUP</h1>
+        <h1 className="App-title">TRINITY SCHOOL</h1>
       </header>
       {membersMenuIsVisible === 'true' ? (
         <div className='Top-menu'>
@@ -438,9 +438,9 @@ function App() {
                 <div className='Search-area'>
                   <label className='Search-label'>Search Member: </label>
                   <input type="Search" className='Search-field' value={memberSearched} onChange={(event) => setMemberSearched(event.target.value)}/>
-                  <button onClick={handleSearch}>Search</button>
+                  <button className='search-button' onClick={handleSearch}>Search</button>
                 </div>
-                <p>Cards Per Page:</p>
+                <p className='limit-buttons-title'>Cards Per Page:</p>
                 <nav>
                   <button className='Card-limit-view-button' onClick={viewLimitFourCards}>4 CARDS</button>
                   <button className='Card-limit-view-button' onClick={viewLimitEightCards}>8 CARDS</button>
