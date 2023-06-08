@@ -116,6 +116,7 @@ function App() {
   const [imageUrl,setImageUrl] = useState ("");
   const [isUpdated, setIsUpdated] = useState ('false');
   const [showableUsers, setShowableUsers] = useState ([...trinityUsers]);
+  const [showableUsersBackup, setShowableUsersBackup] = useState (" ");
   const [membersList, setMembersList] = useState ([...trinityUsers]);
   const [memberSearched, setMemberSearched] = useState ('');
   const [amountOfPages, setAmountOfPages] = useState (0);
@@ -130,35 +131,38 @@ function App() {
   const newMemberForm = (
     <div className= "Add-member-form">
       <legend>Member Data</legend>
-      <label className='Label'>First Name: 
+      <label className='Label'><p className='Label-title'>First Name: </p>
         <input className='Input-field' type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)}/>
-      </label><br/>
-      <label className='Label'>Last Name: 
+      </label>
+      <label className='Label'><p className='Label-title'>Last Name: </p>
         <input className='Input-field' type="text" value={lastName} onChange={(event) => setLastName(event.target.value)}/>
-      </label><br/>
-      <label className='Label'>Date Of Birth: 
+      </label>
+      <label className='Label'><p className='Label-title'>Date Of Birth: </p>
         <input className='Input-field' type="date" value={dateOfBirth} onChange={(event) => setDateOfBirth(event.target.value)}/>
-      </label><br/>
-      <label className='Label'>Role: 
+      </label>
+      <label className='Label'><p className='Label-title'>Role: </p>
         <select className='Input-field' value={role} onChange={(event) => setRole(event.target.value)}>
+          <option value=" "> </option>
           <option value="Teacher">Teacher</option>
           <option value="Monitor">Monitor</option>
           <option value="Student">Student</option>
         </select>
-      </label><br/>
-      <label className='Label'>Status: 
+      </label>
+      <label className='Label'><p className='Label-title'>Status: </p>
         <select className='Input-field' value={status} onChange={(event) => setStatus(event.target.value)}>
+          <option value=" "> </option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
-      </label><br/>
-      <label className='Label'>Mode: 
+      </label>
+      <label className='Label'><p className='Label-title'>Mode: </p>
         <select className='Input-field' value={mode} onChange={(event) => setMode(event.target.value)}>
+          <option value=" "> </option>
           <option value="Online">Online</option>
           <option value="Onsite">Onsite</option>
         </select>
-      </label><br/>
-      <label className='Label'>Image URL: 
+      </label>
+      <label className='Label'><p className='Label-title'>Image URL: </p>
         <input className='Input-field' type="text" value={imageUrl} onChange={(event) => setImageUrl(event.target.value)}/>
       </label><br/>
       <div className='Form-buttons'>
@@ -182,19 +186,22 @@ function App() {
       </label><br/>
       <label className='Label'>Role: 
         <select className='Input-field' value={role} onChange={(event) => setRole(event.target.value)}>
-          <option value={role}>Teacher</option>
-          <option value={role}>Monitor</option>
-          <option value={role}>Student</option>
+          <option value=" "> </option>
+          <option value="Teacher">Teacher</option>
+          <option value="Monitor">Monitor</option>
+          <option value="Student">Student</option>
         </select>
       </label><br/>
       <label className='Label'>Status: 
         <select className='Input-field' value={status} onChange={(event) => setStatus(event.target.value)}>
+          <option value=" "> </option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
       </label><br/>
       <label className='Label'>Mode: 
         <select className='Input-field' value={mode} onChange={(event) => setMode(event.target.value)}>
+          <option value=" "> </option>
           <option value="Online">Online</option>
           <option value="Onsite">Onsite</option>
         </select>
@@ -218,18 +225,21 @@ function App() {
   function teachersButton() {
     const teachersFound = membersList.filter((element) => element.role.toLowerCase() === 'teacher');
     setShowableUsers(teachersFound);
+    setShowableUsersBackup(teachersFound);
     setCardsIsVisible('true');
   }
 
   function monitorsButton() {
     const monitorsFound = membersList.filter((element) => element.role.toLowerCase() === 'monitor');
     setShowableUsers(monitorsFound);
+    setShowableUsersBackup(monitorsFound);
     setCardsIsVisible('true');
   }
 
   function studentsButton() {
     const studentsFound = membersList.filter((element) => element.role.toLowerCase() === 'student');
     setShowableUsers(studentsFound);
+    setShowableUsersBackup(studentsFound);
     setCardsIsVisible('true');
   }
 
@@ -338,45 +348,64 @@ function App() {
   }
 
   function viewLimitFourCards() {
-    const showFourCards = membersList.slice(0,4);
+    const showFourCards = showableUsersBackup.slice(0,4);
     setMaxCardsView(showFourCards.length);
     setShowableUsers(showFourCards);
-    const length = membersList.length;
+    const length = showableUsers.length;
     setAmountOfPages(Math.ceil(length / 4));
     setCounter(1);
     setInit(4);
-    setPreviousPageButtonIsVisible('false');
-    setNextPageButtonIsVisible('true');
+    if (length > 4) {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('true');
+    }else {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('false');
+    }
+    console.log(showableUsersBackup);
   }
   
   function viewLimitEightCards() {
-    const showEightCards = membersList.slice(0,8);
+    const showEightCards = showableUsersBackup.slice(0,8);
     setMaxCardsView(showEightCards.length);
     setShowableUsers(showEightCards);
-    const length = membersList.length;
+    const length = showableUsers.length;
     setAmountOfPages(Math.ceil(length / 8));
     setCounter(1);
     setInit(8);
-    setPreviousPageButtonIsVisible('false');
-    setNextPageButtonIsVisible('true');
+    if (length > 8) {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('true');
+    }else {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('false');
+    }
+    
   }
   
   function viewLimitTenCards() {
-    const showTenCards = membersList.slice(0,10);
+    const showTenCards = showableUsersBackup.slice(0,10);
     setMaxCardsView(showTenCards.length);
     setShowableUsers(showTenCards);
-    const length = membersList.length;
+    const length = showableUsers.length;
     setAmountOfPages(Math.ceil(length / 10));
     setCounter(1);
     setInit(10);
-    setPreviousPageButtonIsVisible('false');
-    setNextPageButtonIsVisible('true');
+    if (length > 10) {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('true');
+    }else {
+      setPreviousPageButtonIsVisible('false');
+      setNextPageButtonIsVisible('false');
+    }
+    console.log(showTenCards);
   }
 
   function nextPageButton() {
     setPreviousPageButtonIsVisible('true');
     const initialMember = showableUsers.length * counter; 
-    const nextPage = membersList.slice(initialMember, (initialMember+maxCardsView));
+    const nextPage = membersList.filter((element) => element.role.toLowerCase() === 'student')
+    .slice(initialMember, (initialMember+maxCardsView));
     setShowableUsers(nextPage);
     setCounter(counter + 1);
     setInit(initialMember);
@@ -385,16 +414,16 @@ function App() {
     } else {
     setNextPageButtonIsVisible('true');
     }
-    //console.log(initialMember);
     //console.log(init);
-    console.log(nextPage);
-    console.log(nextPageButtonIsVisible);
+    //console.log(nextPage);
+    //console.log(nextPageButtonIsVisible);
   }
 
   function previousPageButton() {
     setNextPageButtonIsVisible('true');
     const initialMember = init - maxCardsView;
-    const nextPage = membersList.slice(initialMember, (initialMember+maxCardsView));
+    const nextPage = membersList.filter((element) => element.role.toLowerCase() === 'student')
+    .slice(initialMember, (initialMember+maxCardsView));
     setShowableUsers(nextPage);
     setInit(initialMember);
     if (initialMember === 0) {
